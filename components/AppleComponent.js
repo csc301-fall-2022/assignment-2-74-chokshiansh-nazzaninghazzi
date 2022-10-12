@@ -4,7 +4,7 @@ import ModalDropdown from "react-native-modal-dropdown";
 import { CartItems } from "../Context";
 import Toast from "react-native-root-toast";
 
-const AppleComponent = ({ apple }) => {
+const AppleComponent = ({apple }) => {
   const data = [apple];
   // console.log("data",data);
   const options = ["256gb", "512gb", "1080gb"];
@@ -71,6 +71,7 @@ const AppleComponent = ({ apple }) => {
   return (
     <View>
       {data.map((item, index) => (
+        <View key={item.name}>
         <Pressable style={{ borderEndColor: "#AFD8F5", borderWidth: 0.1 }}>
           <Image
             style={{ height: 200, aspectRatio: 1 / 1, resizeMode: "cover" }}
@@ -174,6 +175,7 @@ const AppleComponent = ({ apple }) => {
             </Pressable>
           </View>
         </Pressable>
+        </View>
       ))}
     </View>
   );

@@ -17,8 +17,10 @@ import AppleComponent from "../components/AppleComponent";
 const MainScreen = () => {
     const [products, setProducts] = useState([]);
     const prodRef = firebase.firestore().collection('products');
-    useEffect( async () =>{
-      prodRef.onSnapshot(
+    useEffect( () =>{
+      async function fetchData(){
+
+        prodRef.onSnapshot(
           querySnapshot => {
               const products = []
               querySnapshot.forEach((doc) =>{
@@ -39,8 +41,9 @@ const MainScreen = () => {
     
               
           }
-      )
-    }, [] )
+      )}
+      fetchData();
+    }, [] );
   const navigation = useNavigation();
   const { cart, setCart } = useContext(CartItems);
   const total = cart
@@ -55,7 +58,7 @@ const MainScreen = () => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         data={products}
-        renderItem={({ item }) => <AppleComponent apple={item} />}
+        renderItem={({key, item }) => <AppleComponent apple={item} />}
       />
       {total === 0 ? null : (
         <Pressable

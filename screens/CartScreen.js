@@ -25,8 +25,9 @@ const CartScreen = () => {
   const DisRef = firebase.firestore().collection('discount');
   const [options, setOptions] = useState([])
   const [dcodes, setDcodes] = useState([])
-  useEffect( async () =>{
-    provRef.onSnapshot(
+  useEffect(() =>{
+    async function fetchData() {
+      provRef.onSnapshot(
         querySnapshot => {
             const province = []
             const options = []
@@ -65,7 +66,9 @@ const CartScreen = () => {
         }
       )
     )
-  }, [] )
+      }
+    fetchData();
+  }, [] );
 
 
 

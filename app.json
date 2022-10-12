@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "Cost-Calculator",
-    "slug": "Cost-Calculator",
+    "slug": "cost-calculator",
+    "owner": "ansh_chokshi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,16 +19,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "cost-calculator-ios"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.ansh_chokshi.costcalculator"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a2e8234a-08f6-4ee2-b301-efec1e95296a"
+      }
     }
   }
 }
