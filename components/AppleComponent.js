@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import { StyleSheet, Text, View, Pressable, Image} from "react-native";
 import React, { useContext, useState } from "react";
 import ModalDropdown from "react-native-modal-dropdown";
 import { CartItems } from "../Context";
@@ -7,13 +7,16 @@ import Toast from "react-native-root-toast";
 const AppleComponent = ({apple }) => {
   const data = [apple];
   // console.log("data",data);
-  const options = ["256gb", "512gb", "1080gb"];
+  const options = ["256GB", "512GB", "1080GB"];
   console.log(options)
   const { cart, setCart } = useContext(CartItems);
   const [selected, setSelected] = useState(false);
-  const [size,setSize] = useState('Medium')
+  const [size, setSize] = useState('Medium')
   const [additems, setAddItems] = useState(0);
+  const eligible_for_size = (item) => {return ['iphone 12', 'iphone 13', 'iphone 14', 'macbook air'].includes(item.name)}
+  
   const addToCart = () => {
+    
     setSelected(true);
 
     if (additems === 0) {
@@ -40,6 +43,8 @@ const AppleComponent = ({apple }) => {
       Toast.hide(toast);
     }, 2500);
     setAddItems(additems + 1);
+    
+    
   };
 
   const removeFromCart = () => {
@@ -65,27 +70,34 @@ const AppleComponent = ({apple }) => {
     setTimeout(function () {
       Toast.hide(toast);
     }, 2500);
-
   };
-
+  
   return (
     <View>
       {data.map((item, index) => (
         <View key={item.name}>
-        <Pressable style={{ borderEndColor: "#AFD8F5", borderWidth: 0.1 }}>
+        <Pressable style={{ backgroundColor: "#006491",
+         borderEndColor: "#AFD8F5", borderWidth: 0.1,
+        flexDirection: 'row', flexWrap: 'wrap', borderBottomColor :"DAD8D8",
+        borderBottomWidth :"1px" }}>
           <Image
-            style={{ height: 200, aspectRatio: 1 / 1, resizeMode: "cover" }}
+            style={{ height: 150, aspectRatio: 1 / 1, resizeMode: "cover", width:'40%' }}
             source={{ uri: item.photo }}
           />
-          <View style={{ backgroundColor: "#006491", padding: 10 }}>
+          
+          <View style={{ backgroundColor: "#006491", padding: 10, width:'60%'}}>
             <Text style={{ fontSize: 15, fontWeight: "bold", color: "white" }}>
-              {item.name.substr(0, 14)}
+              {item.name}
+            </Text>
+            
+            <Text style={{ fontSize: 15, color: "white" }}>
+              ${item.price}
             </Text>
 
             <Text style={{ color: "pink", marginTop: 4 }}>
-              {item.info.substr(0, 20) + "..."}
+              {item.info}
             </Text>
-
+            
             <Pressable
               style={{
                 marginTop: 5,
@@ -95,7 +107,9 @@ const AppleComponent = ({apple }) => {
                 marginTop: 10,
               }}
             >
-              <View>
+              
+            {eligible_for_size(item) ? (
+                <View>
                 <Text style={{ color: "white", fontSize: 15 }}>Size</Text>
                 <ModalDropdown
                   dropdownStyle={{ width: 60, height: 100 }}
@@ -104,7 +118,13 @@ const AppleComponent = ({apple }) => {
                   onSelect={(e) => setSize(String(options[e]))}
                 ></ModalDropdown>
               </View>
-
+              ) : (
+                <View>
+                <Text> </Text>
+              </View>
+              )
+            }
+              
               {selected ? (
                 <Pressable
                   style={{
@@ -175,7 +195,9 @@ const AppleComponent = ({apple }) => {
             </Pressable>
           </View>
         </Pressable>
+        
         </View>
+        
       ))}
     </View>
   );

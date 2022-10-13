@@ -14,6 +14,8 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import ModalDropdown from "react-native-modal-dropdown";
+
+let cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp;
 const CartScreen = () => {
   
   const [tax, setTax] = useState(0);
@@ -81,13 +83,15 @@ const CartScreen = () => {
   const total = cart
     .map((item) => Number((item.price * item.quantity)))
     .reduce((prev, curr) => prev + curr, 0);
-  
+  cart_total = total
   
   const addTax = (name) => {
     province.map((item) => {
       if (name === item.name) {
         setTax(item.tax)
+        cart_tax = item.tax
         setShipping(item.shipping)
+        cart_shipping = item.shipping
       }
     }
     )
@@ -101,12 +105,14 @@ const CartScreen = () => {
       console.log(item.percentage)
       if (name === item.name) {
         setPercentage(item.percentage)
+        cart_percentage = item.percentage
       }
     }
     )
   } 
   const calculateTotal = () => {
     const temp = ((((total+shipping) * (tax/100)) + (total+shipping))* ((100-percentage)/100 ))
+    cart_temp = temp
     return(
       temp
     )
@@ -114,7 +120,7 @@ const CartScreen = () => {
   const placeOrder = () => {
     navigation.navigate("Order")
 
-    setCart([])
+    //setCart([])
   }
   
 
@@ -169,6 +175,18 @@ const CartScreen = () => {
             </Pressable>
             
           ))}
+
+          </ScrollView>
+      </View>
+          <View style={{borderBottomColor :"black", borderBottomWidth :"1px"}}>
+            <Text style={{ left: "2%", sizefontWeight: "bold", fontSize: 17}}>
+                Select province:
+            </Text>
+            <Text> </Text>
+            
+            <ModalDropdown
+  
+
           <View>
           <Modal animationType="slide"
         transparent={true}
@@ -200,34 +218,65 @@ const CartScreen = () => {
         </View>
       </Modal>
                 <ModalDropdown
+
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500 }}
-                  defaultValue={
-                    <Text style={{ sizefontWeight: "bold", fontSize: 15}}>
-                    Select province:
-                    </Text>
-                    }
+                  style={{ width: 500, left: "2%", fontSize: 16 }}
+                  defaultValue={"None⌄"}
                   options={options}
-                  onSelect={(e) => addTax(String(options[e]))}
-                ></ModalDropdown>
-              </View>
-              <View>
+                  onSelect={(e) => addTax(String(options[e]))}>
+                  
+              </ModalDropdown>
+              
+              <Text>   </Text>
+              <Text style={{left: "2%", sizefontWeight: "bold", fontSize: 17}}>
+                Select Discount:
+            </Text>
+            <Text> </Text>
+              
                 <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500 }}
-                  defaultValue={
-                    <Text style={{ sizefontWeight: "bold", fontSize: 15}}>
-                    Select discount:
-                    </Text>
-                    }
+                  style={{ width: 500, left: "2%", fontSize: 16  }}
+                  defaultValue={"None⌄"}
                   options={dcodes}
                   onSelect={(f) => addDiscount(String(dcodes[f]))}
                 ></ModalDropdown>
+
+                <Text> </Text>
+              </View>  
+      
+
+      {total === 0 ? (
+         <Pressable
+         style={{
+           marginBottom: "auto",
+           marginTop: "auto",
+           alignItems: "center",
+           justifyContent: "center",
+           height: "100%",
+         }}
+       >
+         <Text style={{ marginTop: 20, fontSize: 20, fontWeight: "500" }}>
+           Cart is empty!
+         </Text>
+         <Image
+           style={{
+             width: 250,
+             height: 600,
+             resizeMode: "contain",
+           }}
+           source={{
+             uri: "https://pizzaonline.dominos.co.in/static/assets/empty_cart@2x.png",
+           }}
+         />
+       </Pressable>
+      ) : (
+
               </View>
           
         </ScrollView>
       </View>
       
+
         <View style={{ height: 200 }}>
         <View
           style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
@@ -303,5 +352,5 @@ const CartScreen = () => {
 };
 
 export default CartScreen;
-
+export {cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp}
 const styles = StyleSheet.create({});
