@@ -13,6 +13,8 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import ModalDropdown from "react-native-modal-dropdown";
+
+let cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp;
 const CartScreen = () => {
   
   const [tax, setTax] = useState(0);
@@ -79,13 +81,15 @@ const CartScreen = () => {
   const total = cart
     .map((item) => Number((item.price * item.quantity)))
     .reduce((prev, curr) => prev + curr, 0);
-  
+  cart_total = total
   
   const addTax = (name) => {
     province.map((item) => {
       if (name === item.name) {
         setTax(item.tax)
+        cart_tax = item.tax
         setShipping(item.shipping)
+        cart_shipping = item.shipping
       }
     }
     )
@@ -99,12 +103,14 @@ const CartScreen = () => {
       console.log(item.percentage)
       if (name === item.name) {
         setPercentage(item.percentage)
+        cart_percentage = item.percentage
       }
     }
     )
   } 
   const calculateTotal = () => {
     const temp = ((((total+shipping) * (tax/100)) + (total+shipping))* ((100-percentage)/100 ))
+    cart_temp = temp
     return(
       temp
     )
@@ -112,7 +118,7 @@ const CartScreen = () => {
   const placeOrder = () => {
     navigation.navigate("Order")
 
-    setCart([])
+    //setCart([])
   }
 
   return (
@@ -166,36 +172,38 @@ const CartScreen = () => {
             </Pressable>
             
           ))}
-          <View>
-                <ModalDropdown
+          </ScrollView>
+      </View>
+          <View style={{borderBottomColor :"black", borderBottomWidth :"1px"}}>
+            <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+                Select province:
+            </Text>
+            <Text> </Text>
+            
+            <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
                   style={{ width: 500 }}
-                  defaultValue={
-                    <Text style={{ sizefontWeight: "bold", fontSize: 15}}>
-                    Select province:
-                    </Text>
-                    }
+                  defaultValue={"None⌄"}
                   options={options}
-                  onSelect={(e) => addTax(String(options[e]))}
-                ></ModalDropdown>
-              </View>
-              <View>
+                  onSelect={(e) => addTax(String(options[e]))}>
+                  
+              </ModalDropdown>
+              
+              <Text>   </Text>
+              <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+                Select Discount:
+            </Text>
+            <Text> </Text>
+              
                 <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
                   style={{ width: 500 }}
-                  defaultValue={
-                    <Text style={{ sizefontWeight: "bold", fontSize: 15}}>
-                    Select discount:
-                    </Text>
-                    }
+                  defaultValue={"None⌄"}
                   options={dcodes}
                   onSelect={(f) => addDiscount(String(dcodes[f]))}
                 ></ModalDropdown>
-              </View>
-          
-        </ScrollView>
-      </View>
-      
+                <Text> </Text>
+              </View>  
       
 
       {total === 0 ? (
@@ -265,5 +273,5 @@ const CartScreen = () => {
 };
 
 export default CartScreen;
-
+export {cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp}
 const styles = StyleSheet.create({});

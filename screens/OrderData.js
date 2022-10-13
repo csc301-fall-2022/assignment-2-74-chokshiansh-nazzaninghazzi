@@ -1,75 +1,131 @@
-import { StyleSheet, Text, View, SafeAreaView ,Image} from "react-native";
-import React from "react";
-import MapView, { Marker } from "react-native-maps";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  ScrollView,
+  SafeAreaView
+} from "react-native";
+import React, {useContext} from "react";
+import { useNavigation } from "@react-navigation/native";
+import { CartItems } from "../Context";
+import MainScreen, {main_total_quantity} from "./MainScreen"
+import { cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp} from "./CartScreen";
+
 
 const OrderData = () => {
+  const { cart, setCart } = useContext(CartItems);
+  const navigation = useNavigation();
+  
+  const reset= () => {
+    
+    navigation.navigate("Main")
+    setCart([])
+  }
   return (
-    <SafeAreaView style={{ backgroundColor: "#006491", flex: 1 }}>
-      <View
-        style={{
-          backgroundColor: "white",
-          margin: 10,
-          borderRadius: 6,
-          padding: 10,
-        }}
-      >
-        <Text style={{ textAlign: "center", fontSize: 15 }}>
-          Order has been accepted
-        </Text>
+    <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
+      <Text style={{top: "5%", left: "5%", fontWeight:"bold", fontSize:"18px"}}>Order Summary:</Text>
+      
+      <View style={{top:"7%", borderBottomColor:"black", borderBottomWidth: "1px"}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+          {cart.map((item, key) => (
+            <Pressable
+              style={{
+                backgroundColor: "#006491",
+                padding: 10,
+                margin: 10,
+                borderRadius: 8,
+              }}
+              key={key}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={{ width: 70, height: 70, borderRadius: 6 }}
+                  source={{ uri: item.photo }}
+                />
 
-        <Text style={{ textAlign: "center", fontWeight: "bold" }}>
-          Arriving in 30 min
-        </Text>
+                <View style={{ marginLeft: 10 }}>
+                  <Text
+                    style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                  >
+                    {item.name}
+                  </Text>
 
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginVertical: 6,
+                    }}
+                  >
+                    <Text style={{ color: "white", fontSize: 17 }}>
+                      {item.size}
+                    </Text>
+                    <Text style={{ color: "white", fontSize: 15 }}>
+                      {" "}
+                      | {item.info.substr(0, 25) + "..."}
+                    </Text>
+                  </View>
+
+                  <Text style={{ color: "white", fontSize: 16 }}>
+                    ${item.price * item.quantity}
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+            
+          ))}
+          <Text> </Text>
+          </ScrollView>
         
       </View>
 
-      <View style={{alignItems:"center",justifyContent:"center"}}>
-          <MapView
-          style={{height:500,width:500}}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          >
-              <Marker coordinate={{latitude: 37.78825, longitude: -122.4324}}/>
-          </MapView>
-        </View>
-
-        <View
-        style={{
-          padding: 10,
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "white",
-          margin:10,
-          borderRadius:8,
-          marginTop:10,
-        }}
-      >
-        <Image
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: 30,
-            borderColor: "#fff0f5",
-            borderWidth: 1,
-          }}
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyLXBWH6Tl3ITRFCI-ByH7IR_c0gRQhRsXzQ&usqp=CAU",
-          }}
-        />
-        <View style={{ marginLeft: 20 }}>
-          <Text style={{ fontSize: 18, fontWeight: "700", color: "#ff6e4a" }}>
-            4 valets near the restaurent
-          </Text>
-          <Text style={{ fontSize: 17, fontWeight: "600", color: "#696969" }}>
-            Anyone will pick your order
-          </Text>
-        </View>
+      <View style={{top: "10%", left: "5%", borderBottomWidth:"1px", borderBottomColor:"grey"}}>
+        <Text>
+          Items({main_total_quantity}): ${cart_total}
+        </Text>
+        <Text>
+          Shipping: ${cart_shipping}
+        </Text>
+        <Text>
+          Order Discount: -${cart_percentage}
+        </Text>
+        <Text>
+          Total before Tax: ${cart_total + cart_shipping - cart_percentage}
+        </Text>
+        <Text>
+          Estimated Tax: ${cart_tax}
+        </Text>
+        <Text> </Text>
       </View>
+
+      <View style={{top: "15%", left: "5%"}}>
+        <Text>
+          Order Total: ${cart_temp}
+        </Text>
+      </View>
+      <View style={{top: "30%", align:"center"}}>
+        <Text style={{fontWeight:"bold", fontSize:"18px", textAlign:"center"}}>
+          Thank you for shopping with us!
+        </Text>
+      </View>
+      
+      <Pressable onPress={() => reset()}
+          style={{
+            
+            backgroundColor: "green",
+            padding: 10,
+            position: "absolute",
+            bottom: 100,
+            left: 127,
+            borderRadius: 6,
+          }}>
+            <Text>
+              Start a new order
+            </Text>
+        
+      </Pressable>
     </SafeAreaView>
   );
 };
