@@ -175,14 +175,15 @@ const CartScreen = () => {
           </ScrollView>
       </View>
           <View style={{borderBottomColor :"black", borderBottomWidth :"1px"}}>
-            <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+            <Text style={{ left: "2%", sizefontWeight: "bold", fontSize: 17}}>
                 Select province:
             </Text>
             <Text> </Text>
             
             <ModalDropdown
+  
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500 }}
+                  style={{ width: 500, left: "2%", fontSize: 16 }}
                   defaultValue={"None⌄"}
                   options={options}
                   onSelect={(e) => addTax(String(options[e]))}>
@@ -190,14 +191,14 @@ const CartScreen = () => {
               </ModalDropdown>
               
               <Text>   </Text>
-              <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+              <Text style={{left: "2%", sizefontWeight: "bold", fontSize: 17}}>
                 Select Discount:
             </Text>
             <Text> </Text>
               
                 <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500 }}
+                  style={{ width: 500, left: "2%", fontSize: 16  }}
                   defaultValue={"None⌄"}
                   options={dcodes}
                   onSelect={(f) => addDiscount(String(dcodes[f]))}
