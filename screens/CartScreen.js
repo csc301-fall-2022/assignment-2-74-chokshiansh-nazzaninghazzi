@@ -5,6 +5,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  Modal
 } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 import {firebase} from '../firebase'
@@ -20,6 +21,7 @@ const CartScreen = () => {
 
   const [discount, setDiscount] = useState([]);
   const [shipping, setShipping] = useState(0);
+  const [show, setShow] = useState(false)
   const [province, setProvince] = useState([]);
   const provRef = firebase.firestore().collection('province');
   const DisRef = firebase.firestore().collection('discount');
@@ -114,6 +116,7 @@ const CartScreen = () => {
 
     setCart([])
   }
+  
 
   return (
     <>
@@ -167,6 +170,35 @@ const CartScreen = () => {
             
           ))}
           <View>
+          <Modal animationType="slide"
+        transparent={true}
+        visible={show}
+      >
+      <View style={{backgroundColor: "#000000aa",flex:1}}>
+        <View style={{backgroundColor: "#ffffff", marginTop: 75, padding: 40, borderRadius:10, }}>
+
+        
+        <Text style={{ fontWeight: "bold", fontSize: 40 }}>
+          No Province Selected
+          </Text>
+          <Pressable
+        onPress={() => setShow(false)}
+        style={{
+        marginLeft: "auto",
+        marginRight: "auto",
+        backgroundColor: "green",
+        padding: 10,
+        borderRadius: 5,
+        }}>
+        <Text
+            style={{ textAlign: "center", color: "white", fontWeight: "bold" }}
+          >
+            Close
+          </Text>
+        </Pressable>
+        </View>
+        </View>
+      </Modal>
                 <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
                   style={{ width: 500 }}
@@ -196,33 +228,6 @@ const CartScreen = () => {
         </ScrollView>
       </View>
       
-      
-
-      {total === 0 ? (
-         <Pressable
-         style={{
-           marginBottom: "auto",
-           marginTop: "auto",
-           alignItems: "center",
-           justifyContent: "center",
-           height: "100%",
-         }}
-       >
-         <Text style={{ marginTop: 20, fontSize: 20, fontWeight: "500" }}>
-           Cart is empty!
-         </Text>
-         <Image
-           style={{
-             width: 250,
-             height: 600,
-             resizeMode: "contain",
-           }}
-           source={{
-             uri: "https://pizzaonline.dominos.co.in/static/assets/empty_cart@2x.png",
-           }}
-         />
-       </Pressable>
-      ) : (
         <View style={{ height: 200 }}>
         <View
           style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
@@ -241,6 +246,30 @@ const CartScreen = () => {
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>{'Total : $' + calculateTotal()}</Text>
           </View>
         </View>
+        
+        {tax == 0 ?(
+
+      <Pressable
+        onPress={() => setShow(true)}
+        style={{
+        marginLeft: "auto",
+        marginRight: "auto",
+        backgroundColor: "green",
+        padding: 10,
+        borderRadius: 5,
+        }}
+
+        >
+  
+       <Text
+        style={{ textAlign: "center", color: "white", fontWeight: "200" }}
+        >
+          Place Order
+      </Text>
+      </Pressable>
+      
+        
+        ):(
         <Pressable
         onPress={placeOrder}
           style={{
@@ -250,15 +279,24 @@ const CartScreen = () => {
             padding: 10,
             borderRadius: 5,
           }}
+
         >
+          
           <Text
             style={{ textAlign: "center", color: "white", fontWeight: "bold" }}
           >
             Place Order
           </Text>
         </Pressable>
+
+
+          
+        )}
+        
+        
       </View>
-      )}  
+      
+      
      
     </>
   );
