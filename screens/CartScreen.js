@@ -10,7 +10,6 @@ import {
 import React, { useContext, useState, useEffect } from "react";
 import {firebase} from '../firebase'
 import { CartItems } from "../Context";
-import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import ModalDropdown from "react-native-modal-dropdown";

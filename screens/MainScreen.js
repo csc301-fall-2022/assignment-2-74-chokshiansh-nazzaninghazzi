@@ -7,7 +7,6 @@ import {
   Pressable,
 } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { CartItems } from "../Context";
 import {firebase} from '../firebase'
