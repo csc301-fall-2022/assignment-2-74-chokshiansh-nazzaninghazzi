@@ -5,7 +5,8 @@ import {
   Pressable,
   Image,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  DevSettings
 } from "react-native";
 import React, {useContext} from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -20,8 +21,8 @@ const OrderData = () => {
   
   const reset= () => {
     
-    navigation.navigate("Main")
-    setCart([])
+    DevSettings.reload()
+    
   }
   return (
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
@@ -88,12 +89,27 @@ const OrderData = () => {
         <Text>
           Shipping: ${cart_shipping}
         </Text>
-        <Text>
+        {cart_percentage == undefined ? (
+          <View>
+           <Text>
+           Order Discount: -${0}
+         </Text>
+          <Text>
+          Total before Tax: ${cart_total + cart_shipping}
+        </Text>
+        </View>
+        
+        ):(
+          <View>
+              <Text>
           Order Discount: -${cart_percentage}
         </Text>
-        <Text>
+          <Text>
           Total before Tax: ${cart_total + cart_shipping - cart_percentage}
         </Text>
+        </View>
+        )}
+          
         <Text>
           Estimated Tax: ${cart_tax}
         </Text>
