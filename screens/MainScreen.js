@@ -74,7 +74,7 @@ const MainScreen = () => {
             backgroundColor: "green",
             padding: 10,
             position: "absolute",
-            bottom: "97%",
+            bottom: "96%",
             left: "67%",
             borderRadius: 6,
           }}

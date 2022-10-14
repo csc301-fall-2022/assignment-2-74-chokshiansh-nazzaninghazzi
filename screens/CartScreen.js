@@ -276,32 +276,33 @@ const CartScreen = () => {
           
         </View>
         <View style={{borderBottomColor :"black", borderBottomWidth :"1px"}}>
-            <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+            <Text style={{ sizefontWeight: "bold", fontSize: 17, left:"3%"}}>
                 Select province:
             </Text>
             <Text> </Text>
 
             <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500 }}
+                  style={{ width: 500, left:"3%" }}
                   defaultValue={"None⌄"}
                   options={options}
                   onSelect={(e) => addTax(String(options[e]))}
                 ></ModalDropdown>
               
               <Text>   </Text>
-              <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+              <Text style={{ sizefontWeight: "bold", fontSize: 17, left:"3%"}}>
                 Select Discount:
             </Text>
             <Text> </Text>
 
                 <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500 }}
+                  style={{ width: 500, left:"3%" }}
                   defaultValue={"None⌄"}
                   options={dcodes}
                   onSelect={(f) => addDiscount(String(dcodes[f]))}
                 ></ModalDropdown>
+                <Text> </Text>
               </View>
               
        <View style={{ height: 200 }}>
