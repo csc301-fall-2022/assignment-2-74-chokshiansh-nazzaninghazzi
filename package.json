@@ -10,7 +10,8 @@
     "build": "yarn run build"
   },
   "engines": {
-    "node": "14.17.5"
+    "node": "14.17.5",
+    "yarn": "^0.21"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
