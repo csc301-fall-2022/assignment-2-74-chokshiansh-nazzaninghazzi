@@ -7,24 +7,19 @@ import Toast from "react-native-root-toast";
 const AppleComponent = ({ apple}) => {
   const data = [apple];
   // console.log("data",data);
-  //const options = ["256GB", "512GB", "1080GB"];
-  //console.log(select)
+
+  //console.log(options)
   const { cart, setCart } = useContext(CartItems);
   const [selected, setSelected] = useState(false);
-  console.log(selected)
-  
+  // console.log(selected)
+
   const [additems, setAddItems] = useState(0);
-  
+ 
   
   const addToCart = () => {
     
     setSelected(true);
     
-
-    if (additems === 0) {
-      setAddItems(1);
-    }
-
     const ItemPresent = cart.find((item) => item.id === apple.id);
     if (ItemPresent) {
       setCart(
@@ -34,7 +29,10 @@ const AppleComponent = ({ apple}) => {
             : x
         )
       );
-    } else {
+    } else { 
+      if(additems !== 0){
+        setAddItems(0);
+      }
       setCart([...cart, { ...apple,quantity: 1 }]);
       
     }
@@ -47,7 +45,6 @@ const AppleComponent = ({ apple}) => {
       Toast.hide(toast);
     }, 2500);
     setAddItems(additems + 1);
-    
     
   };
 
@@ -113,8 +110,9 @@ const AppleComponent = ({ apple}) => {
               }}
             >
               
+            
               
-              {selected ? (
+              {cart.find((x) => x.id === item.id) ? (
                 <Pressable
                   style={{
                     backgroundColor: "#03C03C",

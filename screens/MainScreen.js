@@ -67,7 +67,7 @@ const MainScreen = () => {
       />
       {total === 0 ? null : (
         <Pressable
-        onPress={() => navigation.navigate("Cart")}
+        onPress={() => navigation.navigate("Cart", {removeSelected: false, removedItem: null})}
           style={{
             
             backgroundColor: "green",

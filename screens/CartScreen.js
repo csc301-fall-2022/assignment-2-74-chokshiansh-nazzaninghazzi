@@ -11,26 +11,29 @@ import React, { useContext, useState, useEffect } from "react";
 import {firebase} from '../firebase'
 import { CartItems } from "../Context";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { useNavigation, useRoute} from "@react-navigation/native";
 import ModalDropdown from "react-native-modal-dropdown";
 import Toast from "react-native-root-toast";
 let cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp;
 
 const CartScreen = () => {
-  console.log(cart_percentage)
+  // console.log(cart_percentage)
   const [tax, setTax] = useState(0);
   const [percentage, setPercentage] = useState(0);
-
   const [discount, setDiscount] = useState([]);
   const [shipping, setShipping] = useState(0);
   const [show, setShow] = useState(false)
-  const [selected, setSelected] = useState(true);
   const [province, setProvince] = useState([]);
   const provRef = firebase.firestore().collection('province');
   const DisRef = firebase.firestore().collection('discount');
   const [options, setOptions] = useState([])
   const [dcodes, setDcodes] = useState([])
-  const [additems, setAddItems] = useState(1);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const removeSelected = route.params.removeSelected
+  const removedItem = route.params.removedItem
+  
+  
   useEffect(() =>{
     async function fetchData() {
       provRef.onSnapshot(
@@ -76,17 +79,33 @@ const CartScreen = () => {
     fetchData();
   }, [] );
 
-
-
-
-  console.log(options);
-  const navigation = useNavigation();
   const { cart, setCart } = useContext(CartItems);
+
+  useEffect(() => {
+    
+    if(removeSelected === "true"){
+      setCart(cart.filter((x) => x.id !== removedItem.id));
+      let toast = Toast.show("Removed from Cart", {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.BOTTOM,
+      });
+      setTimeout(function () {
+        Toast.hide(toast);
+      }, 2500);
+    
+    }
+    
+  }, [])
+
+  //console.log(options);
+  
+  
   const total = cart
     .map((item) => Number((item.price * item.quantity)))
     .reduce((prev, curr) => prev + curr, 0);
   
-  cart_total = total
+  cart_total = total 
+  
   const addTax = (name) => {
     province.map((item) => {
       if (name === item.name) {
@@ -119,110 +138,69 @@ const CartScreen = () => {
   }
   const placeOrder = () => {
     navigation.navigate("Order")
-
     //setCart([])
-  }
-  const addToCart = () => {
-   // setSelected(true);
-
-    if (additems === 0) {
-      setAddItems(1);
-    }
-
-    const ItemPresent = cart.find((item) => item.id === cart.id);
-    if (ItemPresent) {
-      setCart(
-        cart.map((x) =>
-          x.id === cart.id
-            ? { ...ItemPresent, quantity: ItemPresent.quantity + 1 }
-            : x
-        )
-      );
-    } else {
-      setCart([...cart, { ...cart,quantity: 1 }]);
-    }
-    let toast = Toast.show("Added to Cart", {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.BOTTOM,
-    });
-    setTimeout(function () {
-      Toast.hide(toast);
-    }, 2500);
-    setAddItems(additems + 1);
-  };
-
-  const removeFromCart = () => {
-    const ItemPresent = cart.find((item) => item.id === cart.id);
-    if (additems === 1) {
-     // setSelected(false);
-
-      setCart(cart.filter((x) => x.id !== cart.id));
-    } else {
-      setCart(
-        cart.map((x) =>
-          x.id === cart.id
-            ? { ...ItemPresent, quantity: ItemPresent.quantity - 1 }
-            : x
-        )
-      );
-    }
-    setAddItems(Math.max(0, additems - 1));
-    let toast = Toast.show("Removed from Cart", {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.BOTTOM,
-    });
-    setTimeout(function () {
-      Toast.hide(toast);
-    }, 2500);
   }
   
 
   return (
     <>
-      <View style={{ backgroundColor: "white", flex: 1}}>
+      <View style={{ backgroundColor: "white", flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {cart.map((item, key) => (
-            <Pressable
-              style={{
-                backgroundColor: "#006491",
-                padding: 10,
-                margin: 10,
-                borderRadius: 8,
-              }}
-              key={key}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={{ width: 70, height: 70, borderRadius: 6 }}
-                  source={{ uri: item.photo }}
-                />
 
-                <View style={{ marginLeft: 10 }}>
-                  <Text
-                    style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
-                  >
-                    {item.name}
-                  </Text>
+              <View
+                style={{
+                  backgroundColor: "#006491",
+                  padding: 10,
+                  margin: 10,
+                  borderRadius: 8,
+                  flexDirection: 'row', flexWrap: 'wrap'
+                }}
+                key={key}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", width:"50%"}}>
+                  <Image
+                    style={{ width: 70, height: 70, borderRadius: 6 }}
+                    source={{ uri: item.photo }}
+                  />
 
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginVertical: 6,
-                    }}
-                  >
-                    <Text style={{ color: "white", fontSize: 17 }}>
-                      {item.size}
+                  <View style={{ marginLeft: 10 }}>
+                    <Text
+                      style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                    >
+                      {item.name}
                     </Text>
-                  </View>
 
-                  <Text style={{ color: "white", fontSize: 16 }}>
-                    ${item.price} x {item.quantity}
-                  </Text>
-                  
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginVertical: 6,
+                      }}
+                    >
+                    </View>
+
+                    <Text style={{ color: "white", fontSize: 16 }}>
+                      ${item.price} x {item.quantity}
+                    </Text>
+                    
+                  </View>
                 </View>
+                <Pressable  onPress={() => {navigation.replace("Cart", {removeSelected: "true", removedItem: item})}} style={{
+                  backgroundColor: "#03C03C",
+                  padding: 5,
+                  marginLeft: "30%",
+                  marginTop: "7%",
+                  marginBottom:"5%",
+                  borderRadius: 4,
+                  
+                }}> 
+                <Text style={{ marginTop: "5%", color: "white", fontWeight: "bold", size:10 }}>
+                  Remove
+                </Text>
+              </Pressable>
               </View>
-            </Pressable>
+
             
           ))}
 
@@ -308,7 +286,7 @@ const CartScreen = () => {
         <View
           style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
         >
-          <FontAwesome5 name="cc-apple-pay" size={24} color="black" />
+          <FontAwesome5 name="amazon-pay" size={24} color="black" />
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>{'Cart Value: $'+total}</Text>
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>{'Provincial Tax: '+tax}%</Text>

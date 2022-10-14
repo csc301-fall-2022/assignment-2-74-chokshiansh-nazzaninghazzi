@@ -31,8 +31,8 @@ const OrderData = () => {
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <Text style={{top: "5%", left: "5%", fontWeight:"bold", fontSize:"18px"}}>Order Summary:</Text>
       
-      <View style={{top:"7%", borderBottomColor:"black", borderBottomWidth: "1px", height: 350}}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={{top:"7%", borderBottomColor:"black", borderBottomWidth: "1px"}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{height: "50%"}}>
           {cart.map((item, key) => (
             <Pressable
               style={{
@@ -124,13 +124,13 @@ const OrderData = () => {
         <Text> </Text>
       </View>
 
-      <View style={{top: "15%", left: "5%"}}>
+      <View style={{top: "13%", left: "5%"}}>
         <Text>
           Order Total: ${cart_temp}
         </Text>
       </View>
-      <View style={{top: "30%", align:"center"}}>
-        <Text style={{fontWeight:"bold", fontSize:"18px", textAlign:"center"}}>
+      <View style={{top: "16%", align:"center"}}>
+        <Text style={{ fontWeight:"bold", fontSize:"18px", textAlign:"center"}}>
           Thank you for shopping with us!
         </Text>
       </View>
@@ -141,7 +141,7 @@ const OrderData = () => {
             backgroundColor: "green",
             padding: 10,
             position: "absolute",
-            bottom: 100,
+            bottom: "9%",
             left: 127,
             borderRadius: 6,
           }}>
