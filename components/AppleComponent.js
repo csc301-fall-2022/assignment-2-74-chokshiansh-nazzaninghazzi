@@ -4,20 +4,24 @@ import ModalDropdown from "react-native-modal-dropdown";
 import { CartItems } from "../Context";
 import Toast from "react-native-root-toast";
 
-const AppleComponent = ({apple }) => {
+const AppleComponent = ({ apple}) => {
   const data = [apple];
   // console.log("data",data);
   const options = ["256GB", "512GB", "1080GB"];
   console.log(options)
+  //console.log(select)
   const { cart, setCart } = useContext(CartItems);
   const [selected, setSelected] = useState(false);
+  console.log(selected)
   const [size, setSize] = useState('Medium')
   const [additems, setAddItems] = useState(0);
   const eligible_for_size = (item) => {return ['iphone 12', 'iphone 13', 'iphone 14', 'macbook air'].includes(item.name)}
   
   const addToCart = () => {
     
+
     setSelected(true);
+    
 
     if (additems === 0) {
       setAddItems(1);
@@ -34,7 +38,9 @@ const AppleComponent = ({apple }) => {
       );
     } else {
       setCart([...cart, { ...apple,quantity: 1,size:size }]);
+      
     }
+    
     let toast = Toast.show("Added to Cart", {
       duration: Toast.durations.LONG,
       position: Toast.positions.BOTTOM,
@@ -50,7 +56,7 @@ const AppleComponent = ({apple }) => {
   const removeFromCart = () => {
     const ItemPresent = cart.find((item) => item.id === apple.id);
     if (additems === 1) {
-      setSelected(false);
+      setSelected(false)
 
       setCart(cart.filter((x) => x.id !== apple.id));
     } else {
@@ -62,6 +68,7 @@ const AppleComponent = ({apple }) => {
         )
       );
     }
+    
     setAddItems(Math.max(0, additems - 1));
     let toast = Toast.show("Removed from Cart", {
       duration: Toast.durations.LONG,
