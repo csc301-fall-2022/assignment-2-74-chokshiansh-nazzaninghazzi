@@ -286,7 +286,7 @@ const CartScreen = () => {
         <View
           style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
         >
-          <FontAwesome5 name="amazon-pay" size={24} color="black" />
+          <FontAwesome5 name="cc-apple-pay" size={24} color="black" />
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>{'Cart Value: $'+total}</Text>
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>{'Provincial Tax: '+tax}%</Text>
