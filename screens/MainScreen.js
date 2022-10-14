@@ -13,7 +13,6 @@ import { CartItems } from "../Context";
 import {firebase} from '../firebase'
 import AppleComponent from "../components/AppleComponent";
 
-
 let main_total_quantity = 0;
 const MainScreen = () => {
     const [products, setProducts] = useState([]);
@@ -100,3 +99,4 @@ const MainScreen = () => {
 export default MainScreen;
 export {main_total_quantity}
 const styles = StyleSheet.create({});
+

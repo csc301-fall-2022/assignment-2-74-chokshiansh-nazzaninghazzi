@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   DevSettings
+
 } from "react-native";
 import React, {useContext} from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -24,6 +25,7 @@ const OrderData = () => {
     DevSettings.reload()
     
   }
+
   return (
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <Text style={{top: "5%", left: "5%", fontWeight:"bold", fontSize:"18px"}}>Order Summary:</Text>

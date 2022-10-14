@@ -19,7 +19,6 @@ const AppleComponent = ({ apple}) => {
   
   const addToCart = () => {
     
-
     setSelected(true);
     
 
