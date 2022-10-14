@@ -19,7 +19,8 @@ import { cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp} from "
 const OrderData = () => {
   const { cart, setCart } = useContext(CartItems);
   const navigation = useNavigation();
-  
+  const tax_amount = Number((cart_total + cart_shipping)*(cart_tax/100));
+  console.log(tax_amount)
   const reset= () => {
     
     DevSettings.reload()
@@ -30,7 +31,7 @@ const OrderData = () => {
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <Text style={{top: "5%", left: "5%", fontWeight:"bold", fontSize:"18px"}}>Order Summary:</Text>
       
-      <View style={{top:"7%", borderBottomColor:"black", borderBottomWidth: "1px"}}>
+      <View style={{top:"7%", borderBottomColor:"black", borderBottomWidth: "1px", height: 350}}>
       <ScrollView showsVerticalScrollIndicator={false}>
           {cart.map((item, key) => (
             <Pressable
@@ -93,28 +94,33 @@ const OrderData = () => {
         </Text>
         {cart_percentage == undefined ? (
           <View>
-           <Text>
-           Order Discount: -${0}
-         </Text>
+           
           <Text>
           Total before Tax: ${cart_total + cart_shipping}
         </Text>
+        <Text>
+          Estimated Tax: ${tax_amount.toFixed(2)}
+        </Text>
+        <Text>
+           Order Discount: -${0}
+         </Text>
         </View>
         
         ):(
           <View>
-              <Text>
-          Order Discount: -${cart_percentage}
-        </Text>
+              
           <Text>
-          Total before Tax: ${cart_total + cart_shipping - cart_percentage}
+          Total before Tax: ${cart_total + cart_shipping}
+        </Text>
+        <Text>
+          Estimated Tax: ${tax_amount.toFixed(2)} ({cart_tax}%)
+        </Text>
+        <Text>
+          Order Discount: -${((cart_total + cart_shipping + tax_amount ) - cart_temp).toFixed(2)} ({cart_percentage}%)
         </Text>
         </View>
         )}
           
-        <Text>
-          Estimated Tax: ${cart_tax}
-        </Text>
         <Text> </Text>
       </View>
 

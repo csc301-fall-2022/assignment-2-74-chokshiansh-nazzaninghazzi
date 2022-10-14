@@ -7,15 +7,14 @@ import Toast from "react-native-root-toast";
 const AppleComponent = ({ apple}) => {
   const data = [apple];
   // console.log("data",data);
-  const options = ["256GB", "512GB", "1080GB"];
-  console.log(options)
+  //const options = ["256GB", "512GB", "1080GB"];
   //console.log(select)
   const { cart, setCart } = useContext(CartItems);
   const [selected, setSelected] = useState(false);
   console.log(selected)
-  const [size, setSize] = useState('Medium')
+  
   const [additems, setAddItems] = useState(0);
-  const eligible_for_size = (item) => {return ['iphone 12', 'iphone 13', 'iphone 14', 'macbook air'].includes(item.name)}
+  
   
   const addToCart = () => {
     
@@ -36,7 +35,7 @@ const AppleComponent = ({ apple}) => {
         )
       );
     } else {
-      setCart([...cart, { ...apple,quantity: 1,size:size }]);
+      setCart([...cart, { ...apple,quantity: 1 }]);
       
     }
     
@@ -114,22 +113,6 @@ const AppleComponent = ({ apple}) => {
               }}
             >
               
-            {eligible_for_size(item) ? (
-                <View>
-                <Text style={{ color: "white", fontSize: 15 }}>Size</Text>
-                <ModalDropdown
-                  dropdownStyle={{ width: 60, height: 100 }}
-                  style={{ width: 60 }}
-                  options={options}
-                  onSelect={(e) => setSize(String(options[e]))}
-                ></ModalDropdown>
-              </View>
-              ) : (
-                <View>
-                <Text> </Text>
-              </View>
-              )
-            }
               
               {selected ? (
                 <Pressable
