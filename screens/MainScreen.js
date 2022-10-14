@@ -1,6 +1,7 @@
 import {
   StyleSheet,
   Text,
+  View,
   SafeAreaView,
   FlatList,
   Pressable,
@@ -11,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { CartItems } from "../Context";
 import {firebase} from '../firebase'
 import AppleComponent from "../components/AppleComponent";
+
 
 let main_total_quantity = 0;
 const MainScreen = () => {
@@ -45,7 +47,6 @@ const MainScreen = () => {
     }, [] );
   const navigation = useNavigation();
   const { cart, setCart } = useContext(CartItems);
-  
   const total_quantity = cart.reduce((acc, item) => {
     return acc + item.quantity;
   }, 0);
@@ -74,7 +75,7 @@ const MainScreen = () => {
             backgroundColor: "green",
             padding: 10,
             position: "absolute",
-            bottom: "99%",
+            bottom: "97%",
             left: "67%",
             borderRadius: 6,
           }}
