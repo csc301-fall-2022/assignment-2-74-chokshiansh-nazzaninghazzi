@@ -14,21 +14,24 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import ModalDropdown from "react-native-modal-dropdown";
-
+import Toast from "react-native-root-toast";
 let cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp;
+
 const CartScreen = () => {
-  
+  console.log(cart_percentage)
   const [tax, setTax] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
   const [discount, setDiscount] = useState([]);
   const [shipping, setShipping] = useState(0);
   const [show, setShow] = useState(false)
+  const [selected, setSelected] = useState(true);
   const [province, setProvince] = useState([]);
   const provRef = firebase.firestore().collection('province');
   const DisRef = firebase.firestore().collection('discount');
   const [options, setOptions] = useState([])
   const [dcodes, setDcodes] = useState([])
+  const [additems, setAddItems] = useState(1);
   useEffect(() =>{
     async function fetchData() {
       provRef.onSnapshot(
@@ -83,26 +86,23 @@ const CartScreen = () => {
   const total = cart
     .map((item) => Number((item.price * item.quantity)))
     .reduce((prev, curr) => prev + curr, 0);
-  cart_total = total
   
+  cart_total = total
   const addTax = (name) => {
     province.map((item) => {
       if (name === item.name) {
-        setTax(item.tax)
         cart_tax = item.tax
+        setTax(item.tax)
         setShipping(item.shipping)
         cart_shipping = item.shipping
       }
     }
     )
-  }  
+  }
 
   const addDiscount = (name) => {
     discount.map((item) => {
-      console.log(item)
-      console.log(item.name)
-      console.log(item.name == name)
-      console.log(item.percentage)
+      
       if (name === item.name) {
         setPercentage(item.percentage)
         cart_percentage = item.percentage
@@ -111,9 +111,10 @@ const CartScreen = () => {
     )
   } 
   const calculateTotal = () => {
-    const temp = ((((total+shipping) * (tax/100)) + (total+shipping))* ((100-percentage)/100 ))
+    const temp = ((((total+shipping) * (tax/100)) + (total+shipping))* ((100-percentage)/100 )).toFixed(2)
     cart_temp = temp
     return(
+      
       temp
     )
   }
@@ -121,6 +122,59 @@ const CartScreen = () => {
     navigation.navigate("Order")
 
     //setCart([])
+  }
+  const addToCart = () => {
+   // setSelected(true);
+
+    if (additems === 0) {
+      setAddItems(1);
+    }
+
+    const ItemPresent = cart.find((item) => item.id === cart.id);
+    if (ItemPresent) {
+      setCart(
+        cart.map((x) =>
+          x.id === cart.id
+            ? { ...ItemPresent, quantity: ItemPresent.quantity + 1 }
+            : x
+        )
+      );
+    } else {
+      setCart([...cart, { ...cart,quantity: 1 }]);
+    }
+    let toast = Toast.show("Added to Cart", {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.BOTTOM,
+    });
+    setTimeout(function () {
+      Toast.hide(toast);
+    }, 2500);
+    setAddItems(additems + 1);
+  };
+
+  const removeFromCart = () => {
+    const ItemPresent = cart.find((item) => item.id === cart.id);
+    if (additems === 1) {
+     // setSelected(false);
+
+      setCart(cart.filter((x) => x.id !== cart.id));
+    } else {
+      setCart(
+        cart.map((x) =>
+          x.id === cart.id
+            ? { ...ItemPresent, quantity: ItemPresent.quantity - 1 }
+            : x
+        )
+      );
+    }
+    setAddItems(Math.max(0, additems - 1));
+    let toast = Toast.show("Removed from Cart", {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.BOTTOM,
+    });
+    setTimeout(function () {
+      Toast.hide(toast);
+    }, 2500);
   }
   
 
@@ -161,31 +215,17 @@ const CartScreen = () => {
                     <Text style={{ color: "white", fontSize: 17 }}>
                       {item.size}
                     </Text>
-                    <Text style={{ color: "white", fontSize: 15 }}>
-                      {" "}
-                      | {item.info.substr(0, 25) + "..."}
-                    </Text>
                   </View>
 
                   <Text style={{ color: "white", fontSize: 16 }}>
-                    ${item.price * item.quantity}
+                    ${item.price} x {item.quantity}
                   </Text>
+                  
                 </View>
               </View>
             </Pressable>
             
           ))}
-
-          </ScrollView>
-      </View>
-          <View style={{borderBottomColor :"black", borderBottomWidth :"1px"}}>
-            <Text style={{ left: "2%", sizefontWeight: "bold", fontSize: 17}}>
-                Select province:
-            </Text>
-            <Text> </Text>
-            
-            <ModalDropdown
-  
 
           <View>
           <Modal animationType="slide"
@@ -217,72 +257,54 @@ const CartScreen = () => {
         </View>
         </View>
       </Modal>
-                <ModalDropdown
+      
 
+
+         </View>
+              
+          
+        </ScrollView>
+       
+
+       
+      </View>
+      
+        
+        <View
+          style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
+        >
+          
+        </View>
+        <View style={{borderBottomColor :"black", borderBottomWidth :"1px"}}>
+            <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
+                Select province:
+            </Text>
+            <Text> </Text>
+
+            <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500, left: "2%", fontSize: 16 }}
+                  style={{ width: 500 }}
                   defaultValue={"None⌄"}
                   options={options}
-                  onSelect={(e) => addTax(String(options[e]))}>
-                  
-              </ModalDropdown>
+                  onSelect={(e) => addTax(String(options[e]))}
+                ></ModalDropdown>
               
               <Text>   </Text>
-              <Text style={{left: "2%", sizefontWeight: "bold", fontSize: 17}}>
+              <Text style={{ sizefontWeight: "bold", fontSize: 17}}>
                 Select Discount:
             </Text>
             <Text> </Text>
-              
+
                 <ModalDropdown
                   dropdownStyle={{ width: 400, height: 300 }}
-                  style={{ width: 500, left: "2%", fontSize: 16  }}
+                  style={{ width: 500 }}
                   defaultValue={"None⌄"}
                   options={dcodes}
                   onSelect={(f) => addDiscount(String(dcodes[f]))}
                 ></ModalDropdown>
-
-                <Text> </Text>
-              </View>  
-      
-
-      {total === 0 ? (
-         <Pressable
-         style={{
-           marginBottom: "auto",
-           marginTop: "auto",
-           alignItems: "center",
-           justifyContent: "center",
-           height: "100%",
-         }}
-       >
-         <Text style={{ marginTop: 20, fontSize: 20, fontWeight: "500" }}>
-           Cart is empty!
-         </Text>
-         <Image
-           style={{
-             width: 250,
-             height: 600,
-             resizeMode: "contain",
-           }}
-           source={{
-             uri: "https://pizzaonline.dominos.co.in/static/assets/empty_cart@2x.png",
-           }}
-         />
-       </Pressable>
-      ) : (
-
               </View>
-          
-        </ScrollView>
-      </View>
-      
-
-        <View style={{ height: 200 }}>
-        <View
-          style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
-        >
-        </View>
-
+              
+       <View style={{ height: 200 }}>
         <View
           style={{ margin: 10, flexDirection: "row", alignItems: "center" }}
         >
@@ -353,4 +375,5 @@ const CartScreen = () => {
 
 export default CartScreen;
 export {cart_percentage, cart_shipping, cart_total, cart_tax, cart_temp}
+
 const styles = StyleSheet.create({});
