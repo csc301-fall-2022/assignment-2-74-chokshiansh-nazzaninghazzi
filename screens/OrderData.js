@@ -23,7 +23,8 @@ const OrderData = () => {
   console.log(tax_amount)
   const reset= () => {
     
-    DevSettings.reload()
+    navigation.navigate('Main');
+    setCart([])
     
   }
 
