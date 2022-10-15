@@ -31,8 +31,8 @@ For the purpose of deployment we had no prior experience, we started by trying t
 ### Case 1 - TA has an iphone or android phone -
 Download the expo Go application from the App store or Google play store.
 Use the following email and password to login - 
-		Email - csc301.a2.pair.74@gmail.com
-		Password - csc301anshnazanin
+- ### Email - csc301.a2.pair.74@gmail.com
+- Password - csc301anshnazanin
 Open the below link - 
 https://expo.dev/@pair_74/cost-calculator?serviceType=classic&distribution=expo-go 
 Scan the barcode on your mobile device(where you downloaded expo go and logged in with above info) and it will redirect you to the Expo App.
