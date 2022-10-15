@@ -1,7 +1,7 @@
 # Cost-Calculator
 Csc301 - A2
 - #### Ansh Chokshi   1004996917   Utorid - 1004996917.
-- #### Nazanin Gazi 
+- #### Nazanin Ghazitabatabai   1006672619   Utorid - ghazita1
 
 ## Steps to view the app:
 
