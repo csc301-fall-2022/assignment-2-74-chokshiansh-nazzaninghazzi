@@ -18,7 +18,7 @@ Scan the barcode on your mobile device(where you downloaded expo go and logged i
 Git clone the repository
 See that the simulator is connected and running.
 Open terminal on the folder the repo is cloned locally and run the below commands -
-Run - npm install
-Run - expo start --ios or  expo start --android (depending on your simulator)
+Run - `npm install`
+Run - `expo start --ios` or  `expo start --android` (depending on your simulator)
 This will automatically load the App on your simulator.
 
