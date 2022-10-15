@@ -1,3 +1,22 @@
+## Steps to view the app:
+
+### Case 1 - TA has an iphone or android phone -
+Download the expo Go application from the App store or Google play store.
+Use the following email and password to login:
+- #### Email: csc301.a2.pair.74@gmail.com
+- #### Password: csc301anshnazanin
+Open the below link :
+#### https://expo.dev/@pair_74/cost-calculator?serviceType=classic&distribution=expo-go 
+Scan the barcode on your mobile device(where you downloaded expo go and logged in with above info) and it will redirect you to the Expo App.
+
+### Case 2 - TA has a simulator and wants to run the App locally on their laptop.
+Git clone the repository
+See that the simulator is connected and running.
+Open terminal on the folder the repo is cloned locally and run the below commands -
+Run - npm install
+Run - expo start --ios or  expo start --android (depending on your simulator)
+This will automatically load the App on your simulator.
+
 ## Frontend: 
 
 For our mobile App design, we initially considered three options Vue, Swift, and React Native. After doing research, we decided to use React Native for our Frontend.
@@ -25,25 +44,6 @@ Lastly, mySQL is highly compatible with the React Native local database but is h
 ## Deployment and viewing the app: 
 
 For the purpose of deployment we had no prior experience, we started by trying to deploy on netlify, vercel and heroku by connecting the git repo. Later we found out that those only support web apps. We were able to build successfully on Expo but found out we need a paid account to deploy on the App store or Google play store. Finally we decided to take advantage of the expo share project access. We published the app on Expo that generated a link and barcode to share our App with everyone that has been granted access. Below are the  steps to view and test the app. We have also made a video demonstration to show features of the App.
-
-## Steps to view the app:
-
-### Case 1 - TA has an iphone or android phone -
-Download the expo Go application from the App store or Google play store.
-Use the following email and password to login:
-- #### Email: csc301.a2.pair.74@gmail.com
-- #### Password: csc301anshnazanin
-Open the below link :
-#### https://expo.dev/@pair_74/cost-calculator?serviceType=classic&distribution=expo-go 
-Scan the barcode on your mobile device(where you downloaded expo go and logged in with above info) and it will redirect you to the Expo App.
-
-### Case 2 - TA has a simulator and wants to run the App locally on their laptop.
-Git clone the repository
-See that the simulator is connected and running.
-Open terminal on the folder the repo is cloned locally and run the below commands -
-Run - npm install
-Run - expo start --ios or  expo start --android (depending on your simulator)
-This will automatically load the App on your simulator.
 
 
 ## Description of what our app does:
